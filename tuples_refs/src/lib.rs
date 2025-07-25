@@ -10,3 +10,10 @@ pub fn first_name(student: Student) -> &str {
 pub fn last_name(student: Student) -> &str {
     &student.2
 }
+
+fn main() {
+    let student = Student(20, "Pedro".to_string(), "Domingos".to_string());
+    println!("Student's first name: {}", first_name(student));
+    println!("Student's last name: {}", last_name(student));
+    // println!("Student's id: {}", id(student));
+}
