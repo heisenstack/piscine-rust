@@ -1,18 +1,23 @@
 use scalar::*;
 
 fn main() {
-    //sum
-    println!("Sum of 5 and 6 equals: {}", sum(5, 6));
+    // sum
+    println!("sum: {}", sum(234, 2)); // 'sum: 236'
+    println!("sum: {}", sum(1, 255)); // 'ERROR: attempt to add with overflow'
 
-    //diff
-    println!("Diff of 10 and 2 equals: {}", diff(10, 2));
+    // diff
+    println!("diff: {}", diff(234, 2)); // 'diff: 232'
+    println!("diff: {}", diff(-32768, 32766)); // 'ERROR: attempt to subtract with overflow'
 
-    //pro
-    println!("Pro of 3 and 3 equals: {}", pro(3, 3));
+    // product
+    println!("pro: {}", pro(23, 2)); // 'pro: 46'
+    println!("pro: {}", pro(-128, 2)); // 'ERROR: attempt to multiply with overflow'
 
-    //quo
-    println!("Quo of 15 and 3 equals: {}", quo(15, 3));
+    // quotient
+    println!("quo: {}", quo(22.0, 2.0)); // 'quo: 11'
+    println!("quo: {}", quo(-128.23, 2.0)); // 'quo: -64.115'
 
-    //rem
-    println!("Rem of 11 and 3 equals: {}", rem(11, 3));
+    // remainder
+    println!("rem: {}", rem(22.0, 2.0)); // 'rem: 0'
+    println!("rem: {}", rem(-128.23, 2.0)); // 'rem: -0.22999573'
 }

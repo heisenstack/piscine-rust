@@ -10,21 +10,11 @@ pub fn pro(x: i8, y: i8) -> i8 {
     x * y
 }
 
-pub fn quo(x: i32, y: i32) -> i32 {
+pub fn quo(x: f32, y: f32) -> f32 {
     x / y
 }
 
-pub fn rem(x: i32, y: i32) -> i32 {
+pub fn rem(x: f32, y: f32) -> f32 {
     x % y
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn it_works() {
-        let result = sum(2, 2);
-        assert_eq!(result, 4);
-    }
-}
