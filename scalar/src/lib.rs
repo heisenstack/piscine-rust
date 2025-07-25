@@ -17,4 +17,3 @@ pub fn quo(x: f32, y: f32) -> f32 {
 pub fn rem(x: f32, y: f32) -> f32 {
     x % y
 }
-
