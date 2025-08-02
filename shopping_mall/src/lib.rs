@@ -1,80 +1,64 @@
-use std::collections::HashMap;
 pub mod mall;
 pub use mall::{Employee, Floor, Guard, Mall, Store};
+pub use std::collections::HashMap;
 
 pub fn biggest_store(mall: &Mall) -> (String, Store) {
-    let mut biggest = None;
-    let mut max_size = 0;
+    let mut largest_store: Store = Store::new(HashMap::<String, Employee>::new(), 0);
+    let mut largest_store_name: String = String::new();
 
-    for (_floor_name, floor) in &mall.floors {
+    for floor in mall.floors.values() {
         for (store_name, store) in &floor.stores {
-            if store.square_meters > max_size {
-                max_size = store.square_meters;
-                biggest = Some((store_name.clone(), store.clone()));
+            if store.square_meters > largest_store.square_meters {
+                largest_store_name = store_name.clone();
+                largest_store = store.clone();
             }
         }
     }
 
-    biggest.unwrap_or_else(|| {
-        (
-            "No stores".to_string(),
-            Store {
-                employees: HashMap::new(),
-                square_meters: 0,
-            },
-        )
-    })
+    (largest_store_name, largest_store)
 }
 
-pub fn highest_paid_employee(mall: &Mall) -> Vec<(String, Employee)> {
-    let mut max_salary = 0.0;
-    let mut highest_paid = Vec::new();
+pub fn highest_paid_employee(mall: &Mall) -> Vec<(&str, Employee)> {
+    let mut top_earners: Vec<(&str, Employee)> = Vec::new();
+    let mut max_salary: f64 = 0.0;
 
-    for (_floor_name, floor) in &mall.floors {
-        for (_store_name, store) in &floor.stores {
-            for (emp_name, employee) in &store.employees {
-                if (employee.salary - max_salary).abs() < f64::EPSILON {
-                    highest_paid.push((emp_name.clone(), employee.clone()));
-                } else if employee.salary > max_salary {
+    for floor in mall.floors.values() {
+        for store in floor.stores.values() {
+            for (employee_name, employee) in &store.employees {
+                if employee.salary > max_salary {
+                    top_earners.clear();
+                    top_earners.push((employee_name, *employee));
                     max_salary = employee.salary;
-                    highest_paid.clear();
-                    highest_paid.push((emp_name.clone(), employee.clone()));
+                } else if (employee.salary - max_salary).abs() < f64::EPSILON {
+                    top_earners.push((employee_name, *employee));
                 }
             }
         }
     }
 
-    highest_paid
+    top_earners
 }
 
 pub fn nbr_of_employees(mall: &Mall) -> usize {
-    let mut count = mall.guards.len();
+    let mut total_employees = mall.guards.len();
 
     for floor in mall.floors.values() {
         for store in floor.stores.values() {
-            count += store.employees.len();
+            total_employees += store.employees.len();
         }
     }
 
-    count
+    total_employees
 }
-pub fn check_for_securities(mall: &mut Mall, guards: Vec<(String, Guard)>) {
-    let mut mall_area = 0;
-
-    for floor in mall.floors.values() {
-        for store in floor.stores.values() {
-            mall_area += store.square_meters;
-        }
+pub fn check_for_securities(m: &mut Mall, guards: Vec<(String, Guard)>) {
+    let temp = m.guards.len();
+    let mut nbr: f64 = 0.0;
+    for (_, floor_data) in &m.floors {
+        nbr += (floor_data.size_limit as f64 / 200.0).round()
     }
-
-    let required_guards = (mall_area + 199) / 200;
-    let current_guards = mall.guards.len() as u64;
-
-    if current_guards < required_guards {
-        let needed = (required_guards - current_guards) as usize;
-        for (name, guard) in guards.into_iter().take(needed) {
-            mall.guards.insert(name, guard);
-        }
+    // println!("{:?}", nbr);
+    for i in 0..(nbr as usize - temp - 1) {
+        m.hire_guard(&guards[i].0, guards[i].1);
     }
 }
 
@@ -82,10 +66,13 @@ pub fn cut_or_raise(mall: &mut Mall) {
     for floor in mall.floors.values_mut() {
         for store in floor.stores.values_mut() {
             for employee in store.employees.values_mut() {
-                if employee.working_hours.1 - employee.working_hours.0 > 10 {
-                    employee.salary *= 1.1;
+                let work_hours = employee.working_hours.1 - employee.working_hours.0;
+                let adjustment = employee.salary * 0.1;
+
+                if work_hours < 10 {
+                    employee.cut(adjustment);
                 } else {
-                    employee.salary *= 0.9;
+                    employee.raise(adjustment);
                 }
             }
         }
