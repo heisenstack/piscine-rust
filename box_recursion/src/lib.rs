@@ -11,7 +11,7 @@ impl Role {
             "CEO" => Role::CEO,
             "Manager" => Role::Manager,
             "Normal Worker" => Role::Worker,
-            _ => unreachable!(),
+            _ => Role::Worker,
         }
     }
 }
@@ -31,8 +31,8 @@ pub struct Worker {
 }
 
 impl WorkEnvironment {
-    pub fn new() -> Self {
-        Self::default()
+      pub fn new() -> WorkEnvironment {
+        WorkEnvironment {grade: None}
     }
 
     pub fn add_worker(&mut self, name: &str, role: &str) {

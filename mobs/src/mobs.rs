@@ -28,8 +28,8 @@ impl Mob {
         let mut our_age: u32 = 60;
         let mut other_victime: String = String::new();
         let mut other_age: u32 = 60;
-        let  winner: &mut Mob;
-        let  loser: &mut Mob;
+        let mut winner: &mut Mob;
+        let mut loser: &mut Mob;
 
         for (name, member_data) in &self.members {
             match member_data.role {
