@@ -1,5 +1,5 @@
 use how_many_references::*;
-
+use std::rc::Rc;
 fn main() {
     let a = Rc::new("a".to_owned());
     let b = Rc::new("b".to_owned());

@@ -6,18 +6,18 @@ pub struct Node {
 
 impl Node {
     pub fn new(ref_list: Vec<Rc<String>>) -> Self {
-        todo!()
+        Node { ref_list }
     }
 
     pub fn add_element(&mut self, element: Rc<String>) {
-        todo!()
+        self.ref_list.push(element);
     }
 
     pub fn rm_all_ref(&mut self, element: Rc<String>) {
-        todo!()
+        self.ref_list.retain(|e| !Rc::ptr_eq(e, &element));
     }
 }
 
 pub fn how_many_references(ref_list: &Rc<String>) -> usize {
-    todo!()
+    Rc::strong_count(ref_list)
 }
