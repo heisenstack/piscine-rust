@@ -1,0 +1,14 @@
+#[derive(Debug, Clone, PartialEq)]
+pub struct Person<'a> {
+    pub name: &'a str,
+    pub age: u8,
+}
+
+impl Person<'_> {
+    pub fn new(name: &str) -> Person<'_> {
+        Person {
+            name,
+            age: 0,
+        }
+    }
+}
